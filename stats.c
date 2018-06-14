@@ -22,6 +22,7 @@
 
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "stats.h"
 
 /* Size of the Data Set */
@@ -81,5 +82,11 @@ ARRAY_TYPE find_minimum(ARRAY_TYPE *data, ARRAY_SIZE_TYPE n) {
 // from largest to smallest. (The zeroth Element should be
 // the largest value, and the last element (n-1) should be
 // the smallest value. 
+int cmpfunc (const void * a, const void * b) {
+   return ( *(int*)a - *(int*)b );
+}
 void sort_array(ARRAY_TYPE *data, ARRAY_SIZE_TYPE n) {
+	// I was too lazy to write a sorting alg, so just call
+	// qsort() from the standard library
+	qsort(data, n, sizeof(ARRAY_TYPE), cmpfunc);
 }
