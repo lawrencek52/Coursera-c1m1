@@ -16,7 +16,7 @@
  * <Add Extended Description Here>
  *
  * @author Lawrence King
- * @date 2018/June/10
+ * @date 2018/June/13
  *
  */
 
@@ -39,23 +39,29 @@ void main() {
 
   /* Other Variable Declarations Go Here */
   /* Statistics and Printing Functions Go Here */
-
+	print_statistics(test,SIZE);
 }
-
-/* Add other Implementation File Code Here */
 
 // - A function that prints the statistics of an array including
 // minimum, maximum, mean, and median.
 void print_statistics(ARRAY_TYPE *data, ARRAY_SIZE_TYPE n) {
+	printf("Starting Array is:\n");
+	print_array(data,n);
+	printf("minimum value in data array is %d\n", find_minimum(data,n));
+	printf("maximum value in data array is %d\n", find_maximum(data,n));
+	printf("mean value in data array is %d\n", find_mean(data,n));
+	printf("median value in data array is %d\n", find_median(data,n));
+	printf("Sorted Array is:\n");
+	print_array(data,n);
 }
 
 // - Given an array of data and a length, prints the array to the screen
 void print_array(ARRAY_TYPE *data, ARRAY_SIZE_TYPE n) {
-	int i;
+	ARRAY_SIZE_TYPE i;
 	for (i=0; i<(n-1); i++) {
 		/* print all of the elements except the last one */
 		printf("%3d, ", data[i]); /* with a trailing comma and space */
-		if ((i%8)==0) {
+		if ((i%8)==7) {
 			printf("\n");	/* split into lines of 8 elements */
 		}
 	}
@@ -64,18 +70,61 @@ void print_array(ARRAY_TYPE *data, ARRAY_SIZE_TYPE n) {
 
 // - Given an array of data and a length, returns the median value
 ARRAY_TYPE find_median(ARRAY_TYPE *data, ARRAY_SIZE_TYPE n) {
+	/* average would be simple, add up all the numbers and divide by N.
+	Unfortunately median requires sorting the numbers and picking the
+	middle one just to add a challenge there are an even number of numbers
+	in the supplied array so we need to give the average of the two numbers
+	closest to the middle of the sorted array. */
+	
+	sort_array(data,n);
+	if ((n%2)==0) {
+		/* even number of elements in the array, average the two
+		closest to the middle */
+		/* beware: this will fail if the data array has only one element */
+		return((data[(n/2)-1]+data[n/2])/2);
+	} else {
+		/* simply take the middle element */
+		/* due to the magic of integer arithmetic, N/2 always 
+		rounds down if N is odd */
+		return(data[n/2]);
+	}
 }
 
 // - Given an array of data and a length, returns the mean
 ARRAY_TYPE find_mean(ARRAY_TYPE *data, ARRAY_SIZE_TYPE n) {
+	/* add up all of the numbers and divide by N */
+	long	sum = 0;
+	ARRAY_SIZE_TYPE i;
+	for (i=0; i<n; i++) {
+		sum += data[i];
+	}
+	return (sum/n);
 }
 
 // - Given an array of data and a length, returns the maximum
 ARRAY_TYPE find_maximum(ARRAY_TYPE *data, ARRAY_SIZE_TYPE n) {
+	ARRAY_SIZE_TYPE i;
+	ARRAY_TYPE max;
+	max = data[0];
+	for (i=1; i<n; i++) {
+		if (data[i] > max) {
+			max = data[i];
+		}
+	}
+	return(max);
 }
 
 // - Given an array of data and a length, returns the minimum
 ARRAY_TYPE find_minimum(ARRAY_TYPE *data, ARRAY_SIZE_TYPE n) {
+	ARRAY_SIZE_TYPE i;
+	ARRAY_TYPE min;
+	min = data[0];
+	for (i=1; i<n; i++) {
+		if (data[i] < min) {
+			min = data[i];
+		}
+	}
+	return(min);
 }
 
 // - Given an array of data and a length, sorts the array
@@ -83,7 +132,7 @@ ARRAY_TYPE find_minimum(ARRAY_TYPE *data, ARRAY_SIZE_TYPE n) {
 // the largest value, and the last element (n-1) should be
 // the smallest value. 
 int cmpfunc (const void * a, const void * b) {
-   return ( *(int*)a - *(int*)b );
+   return ( (*(ARRAY_TYPE*)a) > (*(ARRAY_TYPE*)b) );
 }
 void sort_array(ARRAY_TYPE *data, ARRAY_SIZE_TYPE n) {
 	// I was too lazy to write a sorting alg, so just call
