@@ -29,7 +29,7 @@
 #define SIZE (40)
 
 // - The main entry point for your program
-void main() {
+int main() {
 
   unsigned char test[SIZE] = { 34, 201, 190, 154,   8, 194,   2,   6,
                               114, 88,   45,  76, 123,  87,  25,  23,
@@ -40,6 +40,7 @@ void main() {
   /* Other Variable Declarations Go Here */
   /* Statistics and Printing Functions Go Here */
 	print_statistics(test,SIZE);
+	return(0);
 }
 
 // - A function that prints the statistics of an array including
@@ -132,7 +133,7 @@ ARRAY_TYPE find_minimum(ARRAY_TYPE *data, ARRAY_SIZE_TYPE n) {
 // the largest value, and the last element (n-1) should be
 // the smallest value. 
 int cmpfunc (const void * a, const void * b) {
-   return ( (*(ARRAY_TYPE*)a) > (*(ARRAY_TYPE*)b) );
+   return ( (*(ARRAY_TYPE*)a) < (*(ARRAY_TYPE*)b) );
 }
 void sort_array(ARRAY_TYPE *data, ARRAY_SIZE_TYPE n) {
 	// I was too lazy to write a sorting alg, so just call
